@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content1 %}
+<li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+{% for module_info in modules_info %}
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">{{module_info.module.code}} </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'student:behavioural' module_info.module.slug %}">Behavioural</a>
+            <a class="dropdown-item" href="{% url 'student:cognitive' module_info.module.slug %}">Cognitive</a>
+            <a class="dropdown-item" href="{% url 'student:affective' module_info.module.slug %}">Affective</a></div>
+    </li>
+{% endfor %}
+{% endblock content1 %}
+
+{% block content %}
+<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+    <div class="container-fluid">
+        <div>
+            <h2 class="font-weight-bold text-left"><span style="color: rgb(90, 92, 105);">{{module_info.module.name}}</span></h2>
+        </div>
+        <ul class="navbar-nav flex-nowrap ml-auto">
+            <li class="nav-item dropdown no-arrow mx-1"><a class="btn btn-outline-primary" href = "{% url 'logout' %}">Logout</a></li>
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{request.user.first_name}} {{request.user.last_name}}</span></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <h3 class="text-dark mb-1">Cognitive Engagement</h3>
+</div>
+<hr />
+<div class="row justify-content-center" style="padding-left: 0px;margin-left: -14px;">
+    <div class="col">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="text-primary font-weight-bold m-0">Results</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="small font-weight-bold">Coursework<span class="float-right">{{cognitive_coursework}}%</span></h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar bg-{{color_coursework}}" style="width: {{cognitive_coursework}}%" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">{{cognitive_coursework}}%</span></div>
+                </div>
+                <h4 class="small font-weight-bold">Exam<span class="float-right">{{cognitive_exam}}%</span></h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar bg-{{color_exam}}" style="width: {{cognitive_exam}}%" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="sr-only">{{cognitive_exam}}%</span></div>
+                </div>
+                <h4 class="small font-weight-bold">Overall<span class="float-right">{{average}}%</span></h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar bg-{{color_average}}" style="width: {{average}}%" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span class="sr-only">{{average}}%</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card text-white bg-success shadow">
+                    <div class="card-body">
+                        <p class="m-0">First-Class Honours</p>
+                        <p class="text-white-50 small m-0">70% and above</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card text-white bg-primary shadow">
+                    <div class="card-body">
+                        <p class="m-0">Upper Second-Class Honours</p>
+                        <p class="text-white-50 small m-0">60-70%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card text-white bg-warning shadow">
+                    <div class="card-body">
+                        <p class="m-0">Lower Second-Class Honours</p>
+                        <p class="text-white-50 small m-0">50-60%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card text-white bg-secondary shadow">
+                    <div class="card-body">
+                        <p class="m-0">Third-Class Honours</p>
+                        <p class="text-white-50 small m-0">40-50%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card text-white bg-danger shadow">
+                    <div class="card-body">
+                        <p class="m-0">Failed</p>
+                        <p class="text-white-50 small m-0">Bellow 40%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}

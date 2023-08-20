@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block content1 %}
+<li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+{% for module in modules %}
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">{{module.code}} </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'teacher:behavioural' module.slug %}">Behavioural</a>
+            <a class="dropdown-item" href="{% url 'teacher:cognitive' module.slug %}">Cognitive</a>
+            <a class="dropdown-item" href="{% url 'teacher:affective' module.slug %}">Affective</a></div>
+    </li>
+{% endfor %}
+{% endblock content1 %}
+{% block content %}
+
+
+{% load static %}
+
+<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+    <div class="container-fluid">
+        <div>
+            <h2 class="font-weight-bold text-left"><span style="color: rgb(90, 92, 105);">{{module.name}}</span></h2>
+        </div>
+        <ul class="navbar-nav flex-nowrap ml-auto">
+            <li class="nav-item dropdown no-arrow mx-1"><a class="btn btn-outline-primary" href = "{% url 'logout' %}">Logout</a></li>
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{request.user.first_name}} {{request.user.last_name}}</span></li>
+        </ul>
+    </div>
+</nav>
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Behavioural Engagement</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Behavioural component describes the level of
+                    involvement in learning activities. The behavioural aspect is tracked using attendance
+                    records from the database, which is the measure of students’ behavioural involvement.
+                    The average attendance of the module is presented using a pie chart, while attendance across weeks is presented using line graph.
+                    The table displays average attendance of each student enrolled in the course. You can click on the username of the student and
+                    access student's attendance across weeks. </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id = "makepdf" class="container-fluid">
+    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0">Behavioural Engagement</h3>
+    </div>
+    <hr />
+    <div id="" class="row">
+        <div class="col-lg-5 col-xl-4">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">Attendance</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Attended&quot;,&quot;Not Attended&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#62df4e&quot;,&quot;#d91212&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;{{attendance}}&quot;,&quot;{{val}}&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas></div>
+                    <div class="text-center small mt-4"><span class="mr-2"><i class="fas fa-circle " style="color: rgb(42,239,10);"></i>&nbsp;Attended</span><span class="mr-2"><i class="fas fa-circle " style="color: rgb(231,13,13);"></i>&nbsp;Not Attended</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-xl-8">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">Attendence over weeks</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Week 1&quot;,&quot;Week 2&quot;,&quot;Week 3&quot;,&quot;Week 4&quot;,&quot;Week 5&quot;,&quot;Week 6&quot;,&quot;Week 7&quot;,&quot;Week 8&quot;,&quot;Week 9&quot;,&quot;Week 10&quot;,&quot;Week 11&quot;,&quot;Week 12&quot;,&quot;&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Attendance&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;{{week.1}}&quot;,&quot;{{week.2}}&quot;,&quot;{{week.3}}&quot;,&quot;{{week.4}}&quot;,&quot;{{week.5}}&quot;,&quot;{{week.6}}&quot;,&quot;{{week.7}}&quot;,&quot;{{week.8}}&quot;,&quot;{{week.9}}&quot;,&quot;{{week.10}}&quot;,&quot;{{week.11}}&quot;,&quot;{{week.12}}&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row"></div>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Individual Attendance</p>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table id="myTable" class="table my-0" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Second Name</th>
+                            <th>Attendance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student_info in student_infos %}
+                        <tr>
+                            <td><a data-toggle="modal" href='#mymodal{{student_info.username}}'>{{student_info.username}}</a></td>
+                            <div class="modal fade" id="mymodal{{student_info.username}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">{{student_info.first_name}} {{student_info.last_name}} - {{student_info.username}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Week 1&quot;,&quot;Week 2&quot;,&quot;Week 3&quot;,&quot;Week 4&quot;,&quot;Week 5&quot;,&quot;Week 6&quot;,&quot;Week 7&quot;,&quot;Week 8&quot;,&quot;Week 9&quot;,&quot;Week 10&quot;,&quot;Week 11&quot;,&quot;Week 12&quot;,&quot;&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Attendance&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;{{student_info.week_attendance.1}}&quot;,&quot;{{student_info.week_attendance.2}}&quot;,&quot;{{student_info.week_attendance.3}}&quot;,&quot;{{student_info.week_attendance.4}}&quot;,&quot;{{student_info.week_attendance.5}}&quot;,&quot;{{student_info.week_attendance.6}}&quot;,&quot;{{student_info.week_attendance.7}}&quot;,&quot;{{student_info.week_attendance.8}}&quot;,&quot;{{student_info.week_attendance.9}}&quot;,&quot;{{student_info.week_attendance.10}}&quot;,&quot;{{student_info.week_attendance.11}}&quot;,&quot;{{student_info.week_attendance.12}}&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <td>{{student_info.first_name}}</td>
+                            <td>{{student_info.last_name}}</td>
+                            <td>{{student_info.attendance}}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', () => {
+      const modal = new bootstrap.Modal(document.querySelector('#myModal'));
+      modal.show();
+    });
+    
+  </script>
+{% endblock content %}

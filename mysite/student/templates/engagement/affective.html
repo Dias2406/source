@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+
+{% block content1 %}
+<li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+{% for module_info in modules_info %}
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">{{module_info.module.code}} </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'student:behavioural' module_info.module.slug %}">Behavioural</a>
+            <a class="dropdown-item" href="{% url 'student:cognitive' module_info.module.slug %}">Cognitive</a>
+            <a class="dropdown-item" href="{% url 'student:affective' module_info.module.slug %}">Affective</a></div>
+    </li>
+{% endfor %}
+{% endblock content1 %}
+
+{% block content %}
+
+
+{% load static %}
+<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+    <div class="container-fluid">
+        <div>
+            <h2 class="font-weight-bold text-left"><span style="color: rgb(90, 92, 105);">{{module_info.module.name}}</span></h2>
+        </div>
+        <ul class="navbar-nav flex-nowrap ml-auto">
+            <li class="nav-item dropdown no-arrow mx-1"><a class="btn btn-outline-primary" href = "{% url 'logout' %}">Logout</a></li>
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{request.user.first_name}} {{request.user.last_name}}</span></li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid">
+    <h3 class="text-dark mb-1">Affective Engagement</h3>
+</div>
+<hr />
+<div class="text-center"><span class="font-weight-bold text-center" style="font-size: 23px;position: relative;transform: perspective(0px);filter: blur(0px) brightness(45%);opacity: 1;margin: 0px;margin-left: 3px;margin-right: 3px;margin-top: 0px;"><strong>How did you feel about the module this week?</strong></span></div>
+    <form class="create-form" method="post">{% csrf_token %}
+        <div class="btn-group btn-group-toggle" data-toggle="buttons"></div>
+            <div id="images" class="text-center" style="margin-top: 1px;text-align: left;">
+                <label class="btn btn-outline-primary active" style="background: url(&quot;{% static 'assets/img/1.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);border-bottom-color: rgba(78,115,223,0)">
+                    <input type="radio" id="btnradio-1" name="emoji" value="1"></label>
+    
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/2.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-2" name="emoji" value="2"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/3.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-3" name="emoji" value="3"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/4.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-4" name="emoji" value="4"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/5.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-5" name="emoji" value="5"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/6.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-6" name="emoji" value="6"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/7.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-7" name="emoji" value="7"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/8.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-8" name="emoji" value="8"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/9.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-9" name="emoji" value="9"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/10.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-10" name="emoji" value="10"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/11.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-11" name="emoji" value="11"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/12.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-2" name="emoji" value="12"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/13.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-3" name="emoji" value="13"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/14.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-4" name="emoji" value="14"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/15.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-5" name="emoji" value="15"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/16.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-6" name="emoji" value="16"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/17.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-7" name="emoji" value="17"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/18.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-8" name="emoji" value="18"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/19.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-9" name="emoji" value="19"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/20.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-10" name="emoji" value="20"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/21.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-11" name="emoji" value="21"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/22.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-2" name="emoji" value="22"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/23.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-3" name="emoji" value="23"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/24.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-4" name="emoji" value="24"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/25.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-5" name="emoji" value="25"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/26.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-6" name="emoji" value="26"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/27.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-7" name="emoji" value="27"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/28.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-8" name="emoji" value="28"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/29.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-9" name="emoji" value="29"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/30.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-10" name="emoji" value="30"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/31.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-11" name="emoji" value="31"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/32.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-2" name="emoji" value="32"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/33.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-3" name="emoji" value="33"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/34.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-4" name="emoji" value="34"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/35.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-5" name="emoji" value="35"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/36.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-6" name="emoji" value="36"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/37.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-7" name="emoji" value="37"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/38.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-8" name="emoji" value="38"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/39.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-9" name="emoji" value="39"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/40.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-10" name="emoji" value="40"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/41.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-11" name="emoji" value="41"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/42.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-2" name="emoji" value="42"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/43.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-3" name="emoji" value="43"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/44.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-4" name="emoji" value="44"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/45.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-5" name="emoji" value="45"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/46.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-6" name="emoji" value="46"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/47.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-7" name="emoji" value="47"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/48.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-8" name="emoji" value="38"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/49.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-9" name="emoji" value="49"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/50.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-10" name="emoji" value="50"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/51.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-11" name="emoji" value="51"></label>
+                
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/52.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-8" name="emoji" value="52"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/53.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-9" name="emoji" value="53"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/54.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-10" name="emoji" value="54"></label>
+
+                <label class="btn btn-outline-primary" style="background: url(&quot;{% static 'assets/img/55.png' %}&quot;) center / contain no-repeat;width: 70px;height: 60px;overflow: visible;border-color: rgba(255,255,255,0);">
+                    <input type="radio" id="btnradio-11" name="emoji" value="55"></label>
+            </div>
+            <div class="text-center" style="margin-top: 5px;">
+                <span class="font-weight-bold text-center" style="font-size: 23px;position: relative;transform: perspective(0px);filter: blur(0px) brightness(45%);opacity: 1;margin: 0px;margin-left: 3px;margin-right: 3px;margin-top: 0px;">Could you explain your emoji in short sentence?</span>
+            </div>
+            <div class="text-center" style="margin-top: 5px;">
+                <input type="text" style="width: 700px;height: 70px;text-align: left;" name="text" required/>
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                    <div style="color:rgb(255, 0, 0)">
+                        <p>{{ message|safe }}</p>
+                    </div>
+                {% else %}
+                    <div style="color:rgb(0, 255, 64)">
+                        <p>{{ message|safe }}</p>
+                    </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+
+            <div style="text-align: center;"><button class="btn btn-primary" name="submit" type="submit" style="width: 182px;margin: 21px;text-align: center;margin-top: 26px;">Submit</button></div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

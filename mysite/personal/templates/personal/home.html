@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% block content1 %}
+{% if not request.user.is_teacher %}
+<li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+{% for module in modules %}
+
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">{{module.module.code}} </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'student:behavioural' module.module.slug %}">Behavioural</a>
+            <a class="dropdown-item" href="{% url 'student:cognitive' module.module.slug %}">Cognitive</a>
+            <a class="dropdown-item" href="{% url 'student:affective' module.module.slug %}">Affective</a></div>
+    </li>
+
+{% endfor %}
+
+{% else %}
+
+<li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+{% for module in modules %}
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">{{module.code}} </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'teacher:behavioural' module.slug %}">Behavioural</a>
+            <a class="dropdown-item" href="{% url 'teacher:cognitive' module.slug %}">Cognitive</a>
+            <a class="dropdown-item" href="{% url 'teacher:affective' module.slug %}">Affective</a></div>
+    </li>
+{% endfor %}
+{% endif %}
+{% endblock content1 %}
+
+{% block content %}
+{% load static %}
+{% if not request.user.is_teacher %}
+<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+    <div class="container-fluid">
+        <div>
+            <h2 class="font-weight-bold text-left"><span style="color: rgb(90, 92, 105);">Dashboard</span></h2>
+        </div>
+        <ul class="navbar-nav flex-nowrap ml-auto">
+            <li class="nav-item dropdown no-arrow mx-1"><a class="btn btn-outline-primary" href = "{% url 'logout' %}">Logout</a></li>
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{request.user.first_name}} {{request.user.last_name}}</span></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-7 col-xl-8" style="text-align: center;">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="text-primary font-weight-bold m-0">Average Results</h6>
+                </div>
+                <div class="card-body">
+                    <h4 class="small font-weight-bold">Coursework<span class="float-right">{{avrg_coursework}}%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-{{ca_color}}" style="width: {{avrg_coursework}}%" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">{{avrg_coursework}}%</span></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Exam<span class="float-right">{{avrg_exam}}%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-{{exam_color}}" style="width: {{avrg_exam}}%" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="sr-only">{{avrg_exam}}%</span></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Overall<span class="float-right">{{avrg_overall}}%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-{{overall_color}}" style="width: {{avrg_overall}}%" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span class="sr-only">{{avrg_overall}}%</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-success shadow">
+                                <div class="card-body">
+                                    <p class="m-0">First-Class Honours</p>
+                                    <p class="text-white-50 small m-0">70% and above</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-primary shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Upper Second-Class Honours</p>
+                                    <p class="text-white-50 small m-0">60-70%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-warning shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Lower Second-Class Honours</p>
+                                    <p class="text-white-50 small m-0">50-60%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-secondary shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Third-Class Honours</p>
+                                    <p class="text-white-50 small m-0">40-50%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-danger shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Failed</p>
+                                    <p class="text-white-50 small m-0">Bellow 40%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 col-xl-4">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">Average Attendance</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Attended&quot;,&quot;Not Attended&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#62df4e&quot;,&quot;#d91212&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;{{avrg_attendance}}&quot;,&quot;{{temp}}&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas></div>
+                    <div class="text-center small mt-4"><span class="mr-2"><i class="fas fa-circle " style="color: rgb(42,239,10);"></i>&nbsp;Attended</span><span class="mr-2"><i class="fas fa-circle " style="color: rgb(231,13,13);"></i>&nbsp;Not Attended</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+    <div class="container-fluid">
+        <div>
+            <h2 class="font-weight-bold text-left"><span style="color: rgb(90, 92, 105);">Dashboard</span></h2>
+        </div>
+        <ul class="navbar-nav flex-nowrap ml-auto">
+            <li class="nav-item dropdown no-arrow mx-1"><a class="btn btn-outline-primary" href = "{% url 'logout' %}">Logout</a></li>
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{request.user.first_name}} {{request.user.last_name}}</span></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="row">
+    <div class="col-lg-5 col-xl-4">
+        <div class="card shadow mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="text-primary font-weight-bold m-0">Average Attendance</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Attended&quot;,&quot;Not Attended&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#62df4e&quot;,&quot;#d91212&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;{{avrg_attendance}}&quot;,&quot;{{val}}&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas></div>
+                <div class="text-center small mt-4"><span class="mr-2"><i class="fas fa-circle " style="color: rgb(42,239,10);"></i>&nbsp;Attended</span><span class="mr-2"><i class="fas fa-circle " style="color: rgb(231,13,13);"></i>&nbsp;Not Attended</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7 col-xl-8">
+        <div class="card shadow mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="text-primary font-weight-bold m-0">Average Attendence over weeks</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Week 1&quot;,&quot;Week 2&quot;,&quot;Week 3&quot;,&quot;Week 4&quot;,&quot;Week 5&quot;,&quot;Week 6&quot;,&quot;Week 7&quot;,&quot;Week 8&quot;,&quot;Week 9&quot;,&quot;Week 10&quot;,&quot;Week 11&quot;,&quot;Week 12&quot;,&quot;&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Attendance&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;{{avrg_week_attendance.week.1}}&quot;,&quot;{{avrg_week_attendance.week.2}}&quot;,&quot;{{avrg_week_attendance.week.3}}&quot;,&quot;{{avrg_week_attendance.week.4}}&quot;,&quot;{{avrg_week_attendance.week.5}}&quot;,&quot;{{avrg_week_attendance.week.6}}&quot;,&quot;{{avrg_week_attendance.week.7}}&quot;,&quot;{{avrg_week_attendance.week.8}}&quot;,&quot;{{avrg_week_attendance.week.9}}&quot;,&quot;{{avrg_week_attendance.week.10}}&quot;,&quot;{{avrg_week_attendance.week.11}}&quot;,&quot;{{avrg_week_attendance.week.12}}&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:20}}]}}}"></canvas></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center" style="padding-left: 0px;margin-left: -14px;">
+    <div class="col">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="text-primary font-weight-bold m-0">Results</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="small font-weight-bold">Coursework<span class="float-right">{{cognitive_coursework}}%</span></h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar bg-{{color_coursework}}" style="width: {{cognitive_coursework}}%" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">{{cognitive_coursework}}%</span></div>
+                </div>
+                <h4 class="small font-weight-bold">Exam<span class="float-right">{{cognitive_exam}}%</span></h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar bg-{{color_exam}}" style="width: {{cognitive_exam}}%" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="sr-only">{{cognitive_exam}}%</span></div>
+                </div>
+                <h4 class="small font-weight-bold">Overall<span class="float-right">{{cognitive_overall}}%</span></h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar bg-{{color_overall}}" style="width: {{cognitive_overall}}%" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span class="sr-only">{{cognitive_overall}}%</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Mostly used Emojis</p>
+        </div>
+        <div class="card-body">
+            <div class="col">
+                <div class="row">
+                    {% for value in values %}
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card text-white bg-success shadow">
+                            <div class="card-body">
+                                <p class="m-0">Week {{forloop.counter}}</p>
+                                {% for val in value %}
+                                <img width="30" height="30" src="{% static 'assets/img/'|add:val|add:'.png' %}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block content1 %}
+<li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+{% for module in modules %}
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">{{module.code}} </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'teacher:behavioural' module.slug %}">Behavioural</a>
+            <a class="dropdown-item" href="{% url 'teacher:cognitive' module.slug %}">Cognitive</a>
+            <a class="dropdown-item" href="{% url 'teacher:affective' module.slug %}">Affective</a></div>
+    </li>
+{% endfor %}
+{% endblock content1 %}
+{% block content %}
+
+
+{% load static %}
+
+<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+    <div class="container-fluid">
+        <div>
+            <h2 class="font-weight-bold text-left"><span style="color: rgb(90, 92, 105);">{{module.name}}</span></h2>
+        </div>
+        <ul class="navbar-nav flex-nowrap ml-auto">
+            <li class="nav-item dropdown no-arrow mx-1"><a class="btn btn-outline-primary" href = "{% url 'logout' %}">Logout</a></li>
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{request.user.first_name}} {{request.user.last_name}}</span></li>
+        </ul>
+    </div>
+</nav>
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cognitive Engagement</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Cognitive aspect refers to the effort required
+                    to complete tasks, use of appropriate learning strategies in practice and the level of problem solving.
+                    The cognitive aspect will be tracked using coursework assessments and exam records from the database,
+                    which reflects students’ use of learning strategies and problem solving techniques to complete practical tasks. 
+                    The graph illustrates data about coursework, exam and final mark using horizontal bar graph,
+                    and individual results of each student using table. Horizontal bar graph allows teachers to
+                    view distribution of grades across different assessment components. </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0">Cognitive Engagement</h3>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">Distribution of grades</h6>
+                </div>
+                <div class="card-body">
+                    <div><canvas data-bss-chart="{&quot;type&quot;:&quot;bar&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;0-39&quot;,&quot;40-49&quot;,&quot;50-59&quot;,&quot;60-69&quot;,&quot;70-79&quot;,&quot;80-89&quot;,&quot;90-100&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Coursework&quot;,&quot;backgroundColor&quot;:&quot;#4e73df&quot;,&quot;borderColor&quot;:&quot;#4e73df&quot;,&quot;data&quot;:[&quot;{{ca_mark.40}}&quot;,&quot;{{ca_mark.49}}&quot;,&quot;{{ca_mark.59}}&quot;,&quot;{{ca_mark.69}}&quot;,&quot;{{ca_mark.79}}&quot;,&quot;{{ca_mark.89}}&quot;,&quot;{{ca_mark.100}}&quot;]},{&quot;label&quot;:&quot;Exam&quot;,&quot;backgroundColor&quot;:&quot;rgb(248,4,4)&quot;,&quot;borderColor&quot;:&quot;rgba(230,11,11,0.1)&quot;,&quot;data&quot;:[&quot;{{exam_mark.40}}&quot;,&quot;{{exam_mark.49}}&quot;,&quot;{{exam_mark.59}}&quot;,&quot;{{exam_mark.69}}&quot;,&quot;{{exam_mark.79}}&quot;,&quot;{{exam_mark.89}}&quot;,&quot;{{exam_mark.100}}&quot;]},{&quot;label&quot;:&quot;Final Grade&quot;,&quot;backgroundColor&quot;:&quot;rgb(8,126,27)&quot;,&quot;data&quot;:[&quot;{{overall_mark.40}}&quot;,&quot;{{overall_mark.49}}&quot;,&quot;{{overall_mark.59}}&quot;,&quot;{{overall_mark.69}}&quot;,&quot;{{overall_mark.79}}&quot;,&quot;{{overall_mark.89}}&quot;,&quot;{{overall_mark.100}}&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:true,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;bold&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;ticks&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}],&quot;yAxes&quot;:[{&quot;ticks&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}]}}}"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Individual Grades</p>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table id="myTable" class="table my-0" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Coursework</th>
+                            <th>Exam</th>
+                            <th>Overall</th>
+                            <th>Honours degree</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cognitive in cognitives %}
+                        <tr>
+                            <td>{{cognitive.username}}</td>
+                            <td>{{cognitive.coursework}}%</td>
+                            <td>{{cognitive.exam}}%</td>
+                            <td>{{cognitive.overall}}%</td>
+                            <td>                                
+                                <div class="card text-white bg-{{cognitive.honours_colour}} shadow">
+                                    <div class="card-body">
+                                        <p class="m-0">{{cognitive.honours}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', () => {
+      const modal = new bootstrap.Modal(document.querySelector('#myModal'));
+      modal.show();
+    });
+  </script>
+{% endblock content %}

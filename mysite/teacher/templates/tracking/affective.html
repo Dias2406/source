@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block content1 %}
+<li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+{% for module in modules %}
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">{{module.code}} </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'teacher:behavioural' module.slug %}">Behavioural</a>
+            <a class="dropdown-item" href="{% url 'teacher:cognitive' module.slug %}">Cognitive</a>
+            <a class="dropdown-item" href="{% url 'teacher:affective' module.slug %}">Affective</a></div>
+    </li>
+{% endfor %}
+{% endblock content1 %}
+{% block content %}
+
+
+{% load static %}
+
+<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+    <div class="container-fluid">
+        <div>
+            <h2 class="font-weight-bold text-left"><span style="color: rgb(90, 92, 105);">{{module.name}}</span></h2>
+        </div>
+        <ul class="navbar-nav flex-nowrap ml-auto">
+            <li class="nav-item dropdown no-arrow mx-1"><a class="btn btn-outline-primary" href = "{% url 'logout' %}">Logout</a></li>
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{request.user.first_name}} {{request.user.last_name}}</span></li>
+        </ul>
+    </div>
+</nav>
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Affective Engagement</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Affective aspect describes an emotional reactions towards teacher, learning activities and university.
+                    Affective aspect is captured by allowing students to reflect their feelings and emotions
+                    through choosing emojis, which provides a measure of students’ affective experiences towards their learning.
+                    This page displays the emojis chosen by students across weeks (Note: students have different View, where they 
+                    can show their emotions towards module/teacher through the feedback form once in a week). The page is structured using grid layout, where
+                    each cell represents a week and displays the emojis chosen by students for that week. Table allows you to view individual student feedback. 
+                    You can click on the emojis and get additional insights
+                    about their feelings.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <h3 class="text-dark mb-1" style="padding-bottom: 0px;">Affective Engagement</h3>
+</div>
+<hr />
+<div id="container" class="container-fluid">
+{% for affective_week in affective_weeks %}
+    <div class="row">
+        <div class="col-xl-2" style="width: 450.5px;">
+            <div>
+                <h4 class="font-weight-normal" style="margin-top: 13px; margin-left: 10px; color: rgb(3,4,6);">Week {{forloop.counter}}:</h3>
+            </div>
+        </div>
+        <div class="col">
+            <div class="text-left" style="margin-top: 1px;text-align: left;">
+                {% for affective in affective_week %}
+                <a data-toggle="modal" href='#mymodal{{affective.auto_increment_id}}'>
+                <img src="{% static 'assets/img/'|add:affective.emoji|add:'.png' %}" width="50" /></a>
+                <div class="modal fade" id="mymodal{{affective.auto_increment_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{affective.student.first_name}} {{affective.student.last_name}} - {{affective.student.username}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            {{affective.text}}
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <hr />
+{% endfor %}
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Text Exaplanation</p>
+        </div>
+        <div class="card-body text-center">
+            {% for key,values in emojis.items %}
+                <a data-toggle="modal" href='#example{{key}}'>
+                <img src="{% static 'assets/img/'|add:key|add:'.png' %}" width="50" /></a>
+                <div class="modal fade" id="example{{key}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <img src="{% static 'assets/img/'|add:key|add:'.png' %}" width="50" />
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body text-left">
+                            {% for value in values %}
+                            <p> {{value}} </p>
+                            {% endfor %}
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Individual answers</p>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table id="myTable" class="table my-0" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Module</th>
+                            <th class="text-center">Emojis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for module_info in module_infos %}
+                        <tr>
+                            <td>{{module_info.student.first_name}}</td>
+                            <td>{{module_info.student.last_name}}</td>
+                            <td>{{module_info.module.code}}</td>
+                            <td class="text-center">
+                            {% for affective in affectives %}
+                            {% if affective.student == module_info.student %}
+                            <a data-toggle="modal" href='#mymodal{{affective.auto_increment_id}}'>
+                            <img width="30" height="30" src="{% static 'assets/img/'|add:affective.emoji|add:'.png' %}"></a>
+                            {% endif %}
+                            {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', () => {
+      const modal = new bootstrap.Modal(document.querySelector('#myModal'));
+      modal.show();
+    });
+  </script>
+{% endblock content %}
+

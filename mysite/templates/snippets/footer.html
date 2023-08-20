@@ -1,0 +1,23 @@
+{% load static %}
+
+
+
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/chart.min.js' %}"></script>
+<script src="{% static 'assets/js/bs-init.js' %}"></script>
+<script src="{% static 'assets/js/jquery.easing.min.js' %}"></script>
+<script src="{% static 'assets/js/theme.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+<script src="{% static 'assets/DataTables/datatables.min.js' %}"></script>
+
+<script>
+
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+    $('#myTable').dataTable( {
+        "lengthMenu": [ 5, 10, 25, 50]
+    } );
+
+</script>

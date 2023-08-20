@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content1 %}
+<li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+{% for module_info in modules_info %}
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">{{module_info.module.code}} </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'student:behavioural' module_info.module.slug %}">Behavioural</a>
+            <a class="dropdown-item" href="{% url 'student:cognitive' module_info.module.slug %}">Cognitive</a>
+            <a class="dropdown-item" href="{% url 'student:affective' module_info.module.slug %}">Affective</a></div>
+    </li>
+{% endfor %}
+{% endblock content1 %}
+{% block content %}
+
+
+{% load static %}
+
+<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+    <div class="container-fluid">
+        <div>
+            <h2 class="font-weight-bold text-left"><span style="color: rgb(90, 92, 105);">{{module.name}}</span></h2>
+        </div>
+        <ul class="navbar-nav flex-nowrap ml-auto">
+            <li class="nav-item dropdown no-arrow mx-1"><a class="btn btn-outline-primary" href = "{% url 'logout' %}">Logout</a></li>
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{request.user.first_name}} {{request.user.last_name}}</span></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <h3 class="text-dark mb-1">Behavioural Engagement</h3>
+    <hr />
+    <div class="row">
+        <div class="col-lg-5 col-xl-4">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">{{module.code}}</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Attended&quot;,&quot;Not Attended&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#62df4e&quot;,&quot;#d91212&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;{{attendance}}&quot;,&quot;{{val}}&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas></div>
+                    <div class="text-center small mt-4"><span class="mr-2"><i class="fas fa-circle " style="color: rgb(42,239,10);"></i>&nbsp;Attended</span><span class="mr-2"><i class="fas fa-circle " style="color: rgb(231,13,13);"></i>&nbsp;Not Attended</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-xl-8">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">Attendence over weeks</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Week 1&quot;,&quot;Week 2&quot;,&quot;Week 3&quot;,&quot;Week 4&quot;,&quot;Week 5&quot;,&quot;Week 6&quot;,&quot;Week 7&quot;,&quot;Week 8&quot;,&quot;Week 9&quot;,&quot;Week 10&quot;,&quot;Week 11&quot;,&quot;Week 12&quot;,&quot;&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Attendance&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;{{week.1}}&quot;,&quot;{{week.2}}&quot;,&quot;{{week.3}}&quot;,&quot;{{week.4}}&quot;,&quot;{{week.5}}&quot;,&quot;{{week.6}}&quot;,&quot;{{week.7}}&quot;,&quot;{{week.8}}&quot;,&quot;{{week.9}}&quot;,&quot;{{week.10}}&quot;,&quot;{{week.11}}&quot;,&quot;{{week.12}}&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
